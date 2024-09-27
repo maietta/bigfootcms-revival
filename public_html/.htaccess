@@ -1,0 +1,18 @@
+# DirectoryIndex .commnetivity.php index.html
+# ErrorDocument 404 /.commnetivity.php
+FallbackResource /.commnetivity.php
+
+#Options -Indexes +FollowSymLinks
+
+#RewriteRule . - [E=no-gzip:1]
+
+RewriteEngine On
+# RewriteBase /
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ /.commnetivity.php/$1?%{QUERY_STRING} [L]
+
+# RewriteBase /
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule . /.commnetivity.php [L]

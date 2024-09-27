@@ -1,0 +1,13 @@
+services:
+  php-apache:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public_html:/var/www/html
+    container_name: php52-apache-container
+
+# Optional: Define network if needed
+networks:
+  default:
+    driver: bridge

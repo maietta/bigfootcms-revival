@@ -1,0 +1,255 @@
+@import url(http://fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700);
+@import url(http://fonts.googleapis.com/css?family=Dynalight);
+body {
+}
+#logo {
+	background-image:url(/Templates/my-account/gfx/logo.png);
+	background-position:left;
+	background-repeat:no-repeat;
+	height:250px;
+}
+#logobg {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#585858), to(#3d3d3d));
+	background-image: -webkit-linear-gradient(top, #044503, #009800, #044503);
+	background-image: -moz-linear-gradient(top, #044503, #009800, #044503);
+	background-image: -ms-linear-gradient(top, #044503, #009800, #044503);
+	background-image: -o-linear-gradient(top, #044503, #009800, #044503);
+	background-image: linear-gradient(top, #044503, #009800, #044503);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#044503, endColorstr=#009800);
+}
+#logo h1 {
+	font-family: 'Libre Baskerville', serif;
+	font-size:88px;
+	text-align:center;
+	line-height:1;
+}
+#logo h1 span {
+	text-align:center;
+	font-family:'Monotype Corsiva', 'Apple Chancery', 'ITC Zapf Chancery', 'URW Chancery L', cursive;
+	font-size:1em;
+}
+#homeslider{
+}
+a.red {
+	color:#F00;
+}
+.top-menu {
+	float: right;
+	margin: 10px 0;
+    padding: 0;
+}
+
+.top-menu li {
+	display: inline;
+	list-style-type: none;
+}
+
+.top-menu li a {
+	border-left: 1px solid #ccc;
+	color: #333;
+	font-size: 11px;
+	padding: 0 4px 0 8px;
+}
+
+.top-menu > li:first-child > a {
+	border-left: none;
+}
+
+.top-menu li a:hover {
+	color: #000;
+}
+.fp_mou_badge { font-size: 40px; font-weight:800; padding: 45px 40px 26px;width:261px;
+text-align:center;height:133px; display:block; color:#000;background:#5119a2 url(/Templates/my-account/gfx/exlarge.png) no-repeat center;-webkit-border-radius: 9px; -moz-border-radius: 9px; -ms-border-radius: 9px; -o-border-radius: 9px; border-radius: 9px; }
+/* =Header Menu (Primary)
+-------------------------------------------------------------- */
+.menu {
+	background-color: #585858;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#585858), to(#3d3d3d));
+	background-image: -webkit-linear-gradient(top, #585858, #3d3d3d);
+	background-image: -moz-linear-gradient(top, #585858, #3d3d3d);
+	background-image: -ms-linear-gradient(top, #585858, #3d3d3d);
+	background-image: -o-linear-gradient(top, #585858, #3d3d3d);
+	background-image: linear-gradient(top, #585858, #3d3d3d);
+	clear: both;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#585858, endColorstr=#3d3d3d);
+	margin: 0 auto;
+}
+
+.menu, 
+.menu ul {
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.menu li {
+	border: 0;
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: 5;
+}
+
+.menu li:hover {
+	white-space: normal;
+	z-index: 10000;
+}
+
+.menu li li {
+	float: none;
+}
+
+.menu ul {
+	left: 0;
+	position: absolute;
+	top: 0;
+	visibility: hidden;
+	z-index: 10;
+}
+
+.menu li:hover > ul {
+	top: 100%;
+	visibility: visible;
+}
+
+.menu li li:hover > ul {
+	left: 100%;
+	top: 0;
+}
+
+.menu:after, 
+.menu ul:after {
+	clear: both;
+	content: '.';
+	display: block;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.menu, 
+.menu ul {
+	min-height: 0;
+}
+
+.menu ul,
+.menu ul ul {
+	margin: 0;
+	padding: 0;
+}
+
+.menu ul li a:hover, 
+.menu li li a:hover {
+	color: #484848;
+	text-decoration: none;
+}
+
+.menu ul {
+	margin-top: 1px;
+	min-width: 15em;
+	width: auto;
+}
+
+.menu a {
+	border-left: 1px solid #585858;
+	color: #fff;
+	cursor: pointer;
+	display: block;
+	font-size: 13px;
+	font-weight: 700;
+	height: 45px;
+	line-height: 45px;
+	margin: 0;
+	padding: 0 0.9em;
+	position: relative;
+	text-decoration: none;
+	text-shadow: 0 -1px 0 #000;
+}
+
+.menu a:hover {
+	background-color: #808080;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#808080), to(#363636));
+	background-image: -webkit-linear-gradient(top, #808080, #363636);
+	background-image: -moz-linear-gradient(top, #808080, #363636);
+	background-image: -ms-linear-gradient(top, #808080, #363636);
+	background-image: -o-linear-gradient(top, #808080, #363636);
+	background-image: linear-gradient(top, #808080, #363636);
+	color: #fff;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#808080, endColorstr=#363636);
+}
+
+.menu .current_page_item a,
+.menu .current-menu-item a {
+	background-color: #343434;
+}
+
+.home .menu .current_page_item a {
+	background: none;
+	background-color: transparent;
+	background-image: none;
+	filter: none;
+}
+
+.menu li li {
+	background: #fff;
+	background-image: none;
+	border: 1px solid #e5e5e5;
+	color: #444;
+	filter: none;
+	margin: -1px 0 1px 0;
+	width: auto;
+}
+
+.menu li li a {
+	background: transparent !important;
+	border: none;
+	color: #444;
+	
+	font-weight: 400;
+	height: auto;
+	
+	line-height: 20px;
+	padding: 3px 8px;
+	text-shadow: none;
+	white-space: nowrap;
+}
+
+.menu li li a:hover {
+	background: #f5f5f5 !important;
+	background-image: none;
+	border: none;
+	color: #444;
+	filter: none;
+}
+
+.menu ul > li + li {
+	border-top: 0;
+}
+
+.menu li li:hover > ul {
+	left: 100%;
+	top: 0;
+}
+
+.menu > li:first-child > a {
+	border-left: none;
+}
+.menu > li:last-child > li {
+	width: 300px;
+}
+/* =Primary Main Menu IE Fixes
+-------------------------------------------------------------- */
+.ie7 .menu ul {
+	background: url(images/ie7-fix.gif) repeat;
+}
+
+.ie7 .menu li li a  {
+    min-width: 100%;
+}
+
+#container {
+	border: 1px solid #e9e9e9;
+}

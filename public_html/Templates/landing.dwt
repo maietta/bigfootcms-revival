@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Home Page (Foundation 4)</title>
+
+<link rel="stylesheet" href="/css/normalize.css" />
+<link rel="stylesheet" href="/css/foundation.css" />
+
+<link rel="stylesheet" href="/Templates/default/css/layout.css" />
+<link rel="stylesheet" href="/Templates/default/css/reveal.css" />
+<link rel="stylesheet" href="/assets/commnetivity/control_panel.css" />
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="/Templates/default/js/jquery.reveal.js"></script>
+
+<link rel="stylesheet" href="/Templates/default/css/jquery.vegas.css" />
+
+<script src="/js/vendor/custom.modernizr.js"></script>
+<script src="/Templates/default/js/jquery.vegas.js"></script>
+</head>
+<body>
+<div class="large-12 columns">
+	<div id="container" class="row">
+		<div id="modalalert"></div>
+		<div class="row">
+			<div class="large-12 columns">
+				<div id="logobg">
+					<div id="logo">
+						<div class="large-3 columns"></div>
+							<div class="large-9 columns "><h1>PREPARE<br /><span>DEL NORTE</span></h1></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row white">
+			<div id="topnavdrop_z4"></div>
+			<div class="row"><div id="alertbox"></div></div>
+			<div class="large-8 columns">
+				<div id="homeslider"></div>
+			</div>
+			<div class="large-4 columns hide-on-phones hide-on-tablets">
+				<iframe src="https://www.google.com/calendar/embed?mode=AGENDA&amp;height=300&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=4qtvms9d1f48s7cuohieheu9ns%40group.calendar.google.com&amp;color=%23B1440E&amp;ctz=America%2FLos_Angeles" style=" border-width:0 " width="100%" height="300" frameborder="1" scrolling="no"></iframe>
+			</div>
+		</div>
+		<div class="row white">
+			<div class="large-12 columns">
+				<h5>Welcome to Prepare Del Norte!</h5>
+				<p>This site was made to create a community of well-informed citizens who are ready to handle any emergency situation that affects our area whether it's a natural or mad-made disaster. We want you to be prepared!</br>
+				<ul style="padding-left: 45px;">
+					<li>LEARN by taking a class or attending a seminar!</li>
+					<li>PREPARE by participating in one of our programs!</li>
+					<li>VOLUNTEER your time, knowledge or companies resources to make sure everyone; people and animals; stay safe and survive emergency disaster situations.</li>
+				</ul>
+				<p>Start today and visit often to help PREPARE DEL NORTE!</p>
+				<hr />
+			</div>
+		</div>
+		<div class="row white">
+			<div class="large-4 columns">
+				<a href="/training-classes.html"><img src="http://www.preparedelnorte.com/media/cmspreviewcache/3.jpg" style="border:1px solid #000;" /></a>
+				<h4>Training</h4>
+				<p>Del Norte County is a leading California community when it comes to Emergency Preparedness. Throughout the year, many classes and trainings are offered to members of the community such as Community Emergency Response Team, Ham Radio, Disaster Animal Response Team, Neighbors Helping Neighbors and more.<br />
+				<a href="/training-classes/index.html">Click here to Learn, Prepare & Volunteer!</a>
+				</p>
+			</div>
+			<div class="large-4 columns">
+				<a href="/events.html" class="radius"><img src="http://www.preparedelnorte.com/media/cmspreviewcache/7.jpg" style="border:1px solid #000;" /></a>
+				<h4>Events/Exercises</h4>
+				<p>In Del Norte County, everyone gets involved in Emergency Preparedness. Find out what's happening next!
+					Practice makes perfect! First responders, local agencies and businesses train during mock Multi-Casualty Incidents. 
+					A community united! The C.E.R.T, V.O.A.D., D.A.R.T and Neighbors Helping Neighbors teams take every opportunity to educate the community on emergency preparedness.</p>
+			</div>
+			<div class="large-4 columns">
+				<a href="/voad/mou-request.html" class="fp_mou_badge">M.O.U.</a>
+				<h4>Get involved!</h4>
+				<p>For individuals and businesses wanting to participate, please request an Memorandum of Understanding with us.</p>
+			</div>
+		</div>
+		<div class="row white">
+			<div class="large-12 columns">
+				<div class="row">
+					<hr />
+					<div class="large-9 columns">
+						<div class="large-12 columns"><div class="right"><h4>Who can help me LEARN, PREPARE &amp; VOLUNTEER?</h4></div></div>
+					</div>
+					<div class="large-3 columns">
+						<a href="/contact/index.html" class="radius button">Contact Us</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+<div id="adminpanel"></div>
+	
+<script src="/js/foundation.min.js"></script>
+
+<script type="text/javascript">
+$(document).foundation();
+
+</script>
+<!-- Required by Commnetivity's UI until UI is rewritten -->
+<script src="/assets/javascripts/jquery.tools.min.js" type="text/javascript"></script>
+<div id="vegas" class="hide-on-phones"></div>
+</body>
+</html>
