@@ -1,13 +1,18 @@
 services:
-  php-apache:
-    build: .
-    ports:
-      - "8080:80"
+  mysql:
+    image: mysql/mysql-server:5.7.37
+    environment:
+     MYSQL_DATABASE: db
+     MYSQL_USER: user
+     MYSQL_PASSWORD: password
+    restart: always
     volumes:
-      - ./public_html:/var/www/html
-    container_name: php52-apache-container
-
-# Optional: Define network if needed
-networks:
-  default:
-    driver: bridge
+     - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  legacy-php:
+    # depends_on:
+    #  - mysql
+    image: orsolin/docker-php-5.3-apache
+    volumes:
+     - ./public_html:/var/www/html
+    ports:
+     - "80:80"

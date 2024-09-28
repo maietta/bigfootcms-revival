@@ -1,5 +1,4 @@
 <?
-	function mb_detect_encoding($input) { return $input; }
 	define("HOSTNAME", "localhost"); // Required!
 	/* If SSL_HOST is set, the system will go into trigger mode for tunneling traffic over VPN. Specify hostname as the value. */
 	// define("SSL_HOST", "https://www.example.com"); // To disable support for SSL, add // or # in front.
@@ -8,9 +7,9 @@
 	define("TEMPLATES", PATH . "/Templates/"); // Add trailing fowardslash.
 
 	define("DB_SERVER", "localhost");
-	define("DB_USER", "");
-	define("DB_PASS", ""); //
-	define("DB_NAME", ""); // Change to "name" if user is diffrent that
+	define("DB_USER", "dbuser");
+	define("DB_PASS", "dbpass"); //
+	define("DB_NAME", "dbname"); // Change to "name" if user is diffrent that
 
 	define("TABLE_PREFIX", "commnetivity"); // change commnetivity to another table prefix, i.e. table names will become commnetivity_tablename.
 	define("DIRECTORY_DEFAULT", "index.html"); // Must not be changed after setting up website, unless you want to make changes in tables.
