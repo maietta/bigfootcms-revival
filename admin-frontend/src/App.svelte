@@ -1,7 +1,6 @@
 <script lang="ts">
 import { type Writable, writable } from 'svelte/store';
 import btOpen from './assets/images/bt_open.png';
-import btClose from './assets/images/bt_close.png';
 
 const isEditing: Writable<boolean> = writable(false);
 const isPanelVisible: Writable<boolean> = writable(true);
@@ -31,25 +30,35 @@ const simulateLoading = () => {
 };
 </script>
 
-<!-- Toggle Button (Always Visible) -->
+<!-- Toggle Button -->
 <button 
   type="button"
-  class="fixed top-0 left-2.5 w-8 h-8 cursor-pointer p-1.5 border-none bg-transparent flex items-center z-[2000000001]"
+  class="toggle-tab fixed left-4 h-9 px-6 py-2 border border-[#7F8567] rounded-b cursor-pointer bg-white/80 hover:bg-white/90 flex items-center justify-center gap-2 min-w-[8rem] z-[2000000001] transition-all duration-300 font-mono"
+  class:open={$isPanelVisible}
   onclick={() => isPanelVisible.set(!$isPanelVisible)}
   onkeydown={e => e.key === 'Enter' && isPanelVisible.set(!$isPanelVisible)}
 >
-  <img src={$isPanelVisible ? btClose : btOpen} alt="Toggle panel" class="w-5 h-5" />
+  <div class="w-4 h-4 relative overflow-hidden">
+    <img 
+      src={btOpen} 
+      alt="" 
+      class="absolute w-4 h-8 transition-transform duration-300" 
+      class:translate-y-0={!$isPanelVisible} 
+      class:translate-y-[-16px]={$isPanelVisible}
+    />
+  </div>
+  <span class="text-[#08215A] text-base">{$isPanelVisible ? 'Close Panel' : 'Open Panel'}</span>
 </button>
 
 <!-- Status Bar -->
-<div class="status-bar fixed -top-6 left-0 right-0 h-6 border border-[#7F8567] border-t-0 z-[2000000000] transition-[top] duration-300 font-['system-ui,_sans-serif']" class:visible={$isPanelVisible} class:loading={$isLoading}>
+<div class="status-bar fixed -top-6 left-0 right-0 h-6 border border-[#7F8567] border-t-0 z-[2000000000] transition-[top] duration-300 font-mono" class:visible={$isPanelVisible} class:loading={$isLoading}>
   <div class="flex items-center h-full px-8">
     <span class="text-[#08215A] text-sm font-semibold">BigfootCMS</span>
   </div>
 </div>
 
 <!-- Main Admin Panel -->
-<main class="cms-admin fixed -top-full left-0 right-0 min-h-[12.5rem] max-h-[80vh] overflow-y-auto z-[1999999999] transition-[top] duration-300 font-['system-ui,_sans-serif'] text-base" class:visible={$isPanelVisible}>
+<main class="cms-admin fixed -top-full left-0 right-0 min-h-[12.5rem] max-h-[80vh] overflow-y-auto z-[1999999999] transition-[top] duration-300 font-mono text-base" class:visible={$isPanelVisible}>
   <!-- Main Tabs -->
   <nav class="main-tabs relative pt-6 px-4 min-h-9 border-b border-[#7F8567]">
     <ul class="flex relative bottom-0 m-0 p-0 list-none">
@@ -211,6 +220,10 @@ const simulateLoading = () => {
 </main>
 
 <style>
+  :global(body) {
+    font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+  
   /* Keep only the styles that can't be handled by Tailwind */
   .status-bar {
     background: url('./assets/images/status_bar_bg.png') repeat-x;
@@ -304,5 +317,15 @@ const simulateLoading = () => {
 
   .setting-group h3 {
     background: url('./assets/images/bluetransparent.png'), rgba(8, 33, 90, 0.8);
+  }
+
+  .toggle-tab {
+    background: url('./assets/images/whitetransparent.png'), rgba(255, 255, 255, 0.8);
+    top: 0;
+    border-top: none;
+  }
+
+  .toggle-tab.open {
+    top: calc(80vh + 1.5rem);
   }
 </style>
