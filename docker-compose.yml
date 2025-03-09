@@ -1,11 +1,11 @@
 services:
-  php:
+  app:
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 80:80
     volumes:
       - ./public_html:/var/www/html
-      - ./apache.conf:/etc/apache2/conf-enabled/custom.conf
-      - ./data:/var/www/data
-    ports:
-      - "80:80"

@@ -1,0 +1,10 @@
+{
+    "config": {
+        "vendor-dir": "public_html/vendor/"
+    },
+    "require": {
+        "php": "^8.3",
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*"
+    }
+}

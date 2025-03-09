@@ -1,62 +1,77 @@
-FROM php:8.3-apache
+ARG ALPINE_VERSION=3.19.1
+FROM alpine:${ALPINE_VERSION}
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    libsqlite3-dev \
-    zip \
-    unzip \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+LABEL Maintainer="Nick Maietta <nick@premoweb.com>"
+LABEL Description="Lightweight container with Nginx & PHP 8.3 based on Alpine Linux."
 
-# Install PHP extensions
-RUN docker-php-ext-install \
-    pdo_sqlite \
-    zip
+ENV NODE_ENV production
 
-# Enable Apache modules
-RUN a2enmod \
-    rewrite \
-    headers
-
-# Configure Apache virtual host
-RUN echo '\
-<VirtualHost *:80>\n\
-    DocumentRoot /var/www/html\n\
-    DirectoryIndex index.php\n\
-    \n\
-    <Directory /var/www/html>\n\
-        Options -Indexes +FollowSymLinks\n\
-        AllowOverride None\n\
-        Require all granted\n\
-        \n\
-        RewriteEngine On\n\
-        RewriteCond %{REQUEST_FILENAME} !-f\n\
-        RewriteCond %{REQUEST_FILENAME} !-d\n\
-        RewriteRule ^(.*)$ index.php [QSA,L]\n\
-    </Directory>\n\
-    \n\
-    ErrorLog ${APACHE_LOG_DIR}/error.log\n\
-    CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
-</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
-
-# Set recommended PHP.ini settings
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
-    sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 64M/' "$PHP_INI_DIR/php.ini" && \
-    sed -i 's/post_max_size = 8M/post_max_size = 64M/' "$PHP_INI_DIR/php.ini" && \
-    sed -i 's/memory_limit = 128M/memory_limit = 256M/' "$PHP_INI_DIR/php.ini"
-
-# Create data directory for SQLite
-RUN mkdir -p /var/www/data && \
-    chown -R www-data:www-data /var/www/data && \
-    chmod -R 755 /var/www/data
-
-# Set working directory
 WORKDIR /var/www/html
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html
+# Install packages and remove default server definition
+RUN apk add --no-cache \
+  curl \
+  imagemagick \
+  libwebp-tools \
+  nginx \
+  php-sqlite3 \
+  php83 \
+  php83-ctype \
+  php83-curl \
+  php83-dom \
+  php83-fpm \
+  php83-gd \
+  php83-iconv \
+  php83-intl \
+  php83-json \
+  php83-mbstring \
+  php83-openssl \
+  php83-pdo \
+  php83-pdo_mysql \
+  php83-pdo_sqlite \
+  php83-session \
+  php83-simplexml \
+  php83-xml \
+  php83-xmlreader \
+  php83-phar \
+  supervisor \
+  && rm -rf /etc/nginx/conf.d/default.conf \
+  && rm -rf /var/cache/apk/*
 
-# Start Apache in foreground
-CMD ["apache2-foreground"] 
+# Symlink php8 to php for convenience
+RUN ln -s /usr/bin/php83 /usr/bin/php
+
+# Configure nginx - http
+COPY webserver/nginx.conf /etc/nginx/nginx.conf
+
+# Configure nginx - default server
+COPY webserver/conf.d /etc/nginx/conf.d/
+
+# Configure PHP-FPM
+COPY webserver/fpm-pool.conf /etc/php83/php-fpm.d/www.conf
+COPY webserver/php.ini /etc/php83/conf.d/custom.ini
+
+# Configure supervisord
+COPY webserver/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Make sure files/folders needed by the processes are accessable when they run under the nobody user
+RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+
+# Add application
+COPY --chown=nobody public_html/ /var/www/html/
+
+RUN mkdir -p /var/www/html/tmp
+RUN chown -R nobody.nobody /var/www/html/tmp
+VOLUME /var/www/html/tmp
+
+# Switch to use a non-root user from here on
+USER nobody
+
+# Expose the port nginx is reachable on
+EXPOSE 80
+
+# Configure a healthcheck to validate that everything is up&running
+HEALTHCHECK --timeout=5s CMD curl --silent --fail http://127.0.0.1:80/fpm-ping
+
+# Let supervisord start nginx & php-fpm
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

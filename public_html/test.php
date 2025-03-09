@@ -37,6 +37,32 @@ try {
                 substr(sprintf('%o', fileperms(__DIR__ . '/../data/bigfootcms.db')), -4) : null
         ]
     ], JSON_PRETTY_PRINT);
+
+    // Get content
+    $stmt = $db->prepare("SELECT * FROM commnetivity_content WHERE virtual_path = '/index.html'");
+    $stmt->execute();
+    $content = $stmt->fetch(PDO::FETCH_OBJ);
+
+    echo "<h1>Content Test</h1>";
+    echo "<pre>";
+    var_dump($content);
+    echo "</pre>";
+
+    // Get navigation
+    $stmt = $db->prepare(
+        "SELECT n.virtual_path, c.page_title, c.nav_title 
+         FROM commnetivity_navigation n
+         JOIN commnetivity_content c ON n.virtual_path = c.virtual_path
+         WHERE n.position = 'top'
+         ORDER BY n.weight"
+    );
+    $stmt->execute();
+    $nav = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+    echo "<h1>Navigation Test</h1>";
+    echo "<pre>";
+    var_dump($nav);
+    echo "</pre>";
 } catch (Exception $e) {
     header('Content-Type: application/json');
     http_response_code(500);

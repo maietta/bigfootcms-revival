@@ -8,6 +8,14 @@ use DOMXPath;
 use DOMDocumentFragment;
 
 /**
+ * Asset container for stylesheets and scripts
+ */
+class AssetContainer {
+    public array $head = [];
+    public array $body = [];
+}
+
+/**
  * PureHtml - A modern template processing library
  * 
  * @author Nicholas Maietta <nick@icode4u.com>
@@ -16,17 +24,13 @@ use DOMDocumentFragment;
 class PureHtml {
     private array $index = [];
     private array $metatags = [];
+    public readonly AssetContainer $stylesheets;
+    public AssetContainer $javascripts;
     
-    public function __construct(
-        private readonly object $stylesheets = new class() {
-            public array $head = [];
-            public array $body = [];
-        },
-        private object $javascripts = new class {
-            public array $head = [];
-            public array $body = [];
-        }
-    ) {}
+    public function __construct() {
+        $this->stylesheets = new AssetContainer();
+        $this->javascripts = new AssetContainer();
+    }
     
     /**
      * Set the title of an HTML document
@@ -92,11 +96,9 @@ class PureHtml {
     public function splice(string|DOMDocument $html, string $new, string $tag): string {
         $dom = $this->getInstanceOfDom($html);
         
-        $newDoc = new DOMDocument();
-        $newDoc->loadHTML('<?xml encoding="UTF-8">' . $new, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        
         $element = $dom->getElementById($tag);
         if (!$element) {
+            echo "<!--\nDEBUG: Element with ID '$tag' not found\n-->\n";
             return $dom->saveHTML() ?: '';
         }
         
@@ -105,13 +107,29 @@ class PureHtml {
             $element->removeChild($element->firstChild);
         }
         
-        // Insert new content
-        $xpath = new DOMXPath($newDoc);
-        $body = $xpath->query('/html/body')->item(0);
+        // Create a temporary document for the new content
+        $tempDoc = new DOMDocument();
+        libxml_use_internal_errors(true);
+        
+        // Add HTML5 doctype and root element to ensure valid HTML
+        $wrappedContent = '<!DOCTYPE html><html><body>' . $new . '</body></html>';
+        $tempDoc->loadHTML($wrappedContent, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR);
+        
+        // Clear any errors
+        libxml_clear_errors();
+        
+        // Import and append the content
+        $xpath = new DOMXPath($tempDoc);
+        $body = $xpath->query('//body')->item(0);
+        
         if ($body) {
-            $fragment = $dom->createDocumentFragment();
-            $fragment->appendXML($newDoc->saveXML($body));
-            $element->appendChild($fragment);
+            // Import each child node individually
+            foreach ($body->childNodes as $child) {
+                $importedNode = $dom->importNode($child, true);
+                $element->appendChild($importedNode);
+            }
+        } else {
+            echo "<!--\nDEBUG: No content wrapper found\n-->\n";
         }
         
         return $dom->saveHTML($dom->documentElement) ?: '';
@@ -141,17 +159,38 @@ class PureHtml {
         return $this->beautifyDOM($dom);
     }
     
-    private function getInstanceOfDom(string|DOMDocument $dom): DOMDocument {
+    /**
+     * Create a DOM instance from HTML string or document
+     */
+    public function createDom(string|DOMDocument $html): DOMDocument {
+        return $this->getInstanceOfDom($html);
+    }
+
+    /**
+     * Get a DOM instance from HTML string or document
+     */
+    protected function getInstanceOfDom(string|DOMDocument $dom): DOMDocument {
         if ($dom instanceof DOMDocument) {
             return $dom;
         }
-        
+
+        // Suppress warnings about HTML5 elements
         libxml_use_internal_errors(true);
-        $document = new DOMDocument('1.0', 'UTF-8');
-        $document->loadHTML($dom, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        $doc = new DOMDocument();
+        
+        // Add HTML5 doctype if not present
+        if (!str_contains($dom, '<!DOCTYPE html>')) {
+            $dom = '<!DOCTYPE html>' . $dom;
+        }
+        
+        // Load HTML with UTF-8 encoding
+        $doc->loadHTML($dom, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR);
+        
+        // Clear any errors
         libxml_clear_errors();
         
-        return $document;
+        return $doc;
     }
     
     private function removeNode(DOMNode $node): void {
@@ -215,6 +254,11 @@ class PureHtml {
             } else {
                 $attributes = $this->getElementAttributes($resource);
                 if (!$attributes) continue;
+                
+                // Skip Vite client scripts as they're handled separately
+                if (isset($attributes['src']) && strpos($attributes['src'], '@vite/client') !== false) {
+                    continue;
+                }
                 
                 $key = $this->generateResourceKey($attributes);
                 if (!in_array($key, $this->index)) {

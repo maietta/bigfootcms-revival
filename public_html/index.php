@@ -1,13 +1,18 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 
 require_once __DIR__ . '/lib/Database.php';
 require_once __DIR__ . '/lib/Framework.php';
-require_once __DIR__ . '/purehtml.php';
+require_once __DIR__ . '/lib/Template/PureHtml.php';
+
+use BigfootCMS\Template\PureHtml;
 
 try {
     // Initialize framework and PureHTML
     $framework = new Framework();
-    $template = new PureHTML();
+    $template = new PureHtml();
     
     // Get the requested path
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -38,8 +43,8 @@ try {
         throw new Exception('Could not load template file');
     }
     
-    // Create DOM from template
-    $dom = $template->getInstanceOfDom($templateHtml);
+    // Create initial DOM from template
+    $dom = $template->createDom($templateHtml);
     
     // Set the page title
     $dom = $template->title($dom, htmlspecialchars($content->page_title) . ' - BigfootCMS');
@@ -57,11 +62,15 @@ try {
     // Prepare main content
     $mainContent = base64_decode($content->encoded_content);
     
-    // Splice content into template
+    // Get the initial HTML
     $html = $dom->saveHTML();
+    
+    // Splice in navigation and content
     $html = $template->splice($html, $navHtml, 'main-nav');
     $html = $template->splice($html, $mainContent, 'main-content');
-    $dom = $template->getInstanceOfDom($html);
+    
+    // Create new DOM from the spliced HTML
+    $dom = $template->createDom($html);
     
     // Add default styles
     $defaultStyles = '
@@ -81,14 +90,17 @@ try {
     $template->stylesheets->head[] = $defaultStyles;
     
     // Rebuild the template with all assets
-    $finalDom = $template->rebuild($dom);
+    $html = $template->rebuild($dom);
     
     // Output the final HTML
-    echo $finalDom->saveHTML();
+    echo $html;
     
 } catch (Exception $e) {
     error_log($e->getMessage());
     http_response_code(500);
     echo '<h1>500 Internal Server Error</h1>';
-    echo '<p>Something went wrong. Please try again later.</p>';
+    echo '<pre>';
+    echo "Error: " . $e->getMessage() . "\n\n";
+    echo "Stack trace:\n" . $e->getTraceAsString();
+    echo '</pre>';
 } 

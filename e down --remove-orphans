@@ -1,0 +1,5 @@
+[33m2f7009e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/svelte-sqlite-modernization[m[33m, [m[1;31morigin/feature/svelte-sqlite-modernization[m[33m)[m Refactor tab navigation with dynamic sliding background and enhanced visual styling
+[33m99ec570[m Add dynamic panel height tracking and content transition animations
+[33mb8b30b7[m Enhance toggle button and panel styling with monospace font and improved UX
+[33m68b56aa[m Refactor tab styling and remove perspective transforms
+[33mc1364f5[m Remove legacy PHP and jQuery frontend assets
