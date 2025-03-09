@@ -13,6 +13,8 @@ const panelHeight: Writable<number> = writable(0);
 
 let adminPanel: HTMLElement;
 let resizeObserver: ResizeObserver;
+let mainTabsList: HTMLUListElement;
+let subTabsList: HTMLUListElement;
 
 // Update panel height
 const updatePanelHeight = () => {
@@ -26,6 +28,33 @@ onMount(() => {
   resizeObserver = new ResizeObserver(updatePanelHeight);
   if (adminPanel) {
     resizeObserver.observe(adminPanel);
+  }
+
+  // Add this after the existing onMount
+  if (mainTabsList) {
+    const currentTab = mainTabsList.querySelector('li.current') as HTMLElement;
+    if (currentTab) {
+      const left = currentTab.offsetLeft;
+      const width = currentTab.offsetWidth;
+      const bg = mainTabsList.querySelector('.sliding-bg') as HTMLElement;
+      if (bg) {
+        bg.style.setProperty('--left', `${left}px`);
+        bg.style.setProperty('--width', `${width}px`);
+      }
+    }
+  }
+
+  if (subTabsList) {
+    const currentTab = subTabsList.querySelector('li.current') as HTMLElement;
+    if (currentTab) {
+      const left = currentTab.offsetLeft;
+      const width = currentTab.offsetWidth;
+      const bg = subTabsList.querySelector('.sliding-bg') as HTMLElement;
+      if (bg) {
+        bg.style.setProperty('--left', `${left}px`);
+        bg.style.setProperty('--width', `${width}px`);
+      }
+    }
   }
 });
 
@@ -54,6 +83,24 @@ const simulateLoading = () => {
   isLoading.set(true);
   setTimeout(() => isLoading.set(false), 1000);
 };
+
+const updateTabIndicator = (list: HTMLUListElement | null, selector: string) => {
+  if (!list) return;
+  const currentTab = list.querySelector(selector) as HTMLLIElement;
+  if (currentTab) {
+    const left = currentTab.offsetLeft;
+    const width = currentTab.offsetWidth;
+    const bg = list.querySelector('.sliding-bg') as HTMLDivElement;
+    if (bg) {
+      bg.style.setProperty('--left', `${left}px`);
+      bg.style.setProperty('--width', `${width}px`);
+    }
+  }
+};
+
+// Update indicators when tabs change
+$: updateTabIndicator(mainTabsList, 'li.current');
+$: updateTabIndicator(subTabsList, 'li.current');
 </script>
 
 <!-- Toggle Button -->
@@ -91,17 +138,38 @@ const simulateLoading = () => {
   class:visible={$isPanelVisible}
 >
   <!-- Main Tabs -->
-  <nav class="main-tabs relative pt-6 px-4 min-h-9 border-b border-[#7F8567]">
-    <ul class="flex relative bottom-0 m-0 p-0 list-none">
-      {#each tabs as tab}
-        <li class="relative mr-1" class:current={$currentTab === tab.id}>
+  <nav class="main-tabs relative pt-6 px-4 min-h-9">
+    <ul bind:this={mainTabsList} class="flex relative bottom-0 m-0 p-0 list-none">
+      {#each tabs as tab, i}
+        <li 
+          class="relative mr-2 z-10" 
+          class:current={$currentTab === tab.id}
+          data-index={i}
+        >
+          <div 
+            class="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-t-md border border-[#7F8567] border-b-0 bg-[url('./assets/images/greentransparent.png')] bg-[rgba(127,133,103,0.8)] opacity-0 pointer-events-none"
+            class:opacity-100={$currentTab === tab.id}
+          />
           <button 
             onclick={() => {
               simulateLoading();
               currentTab.set(tab.id);
+              const target = mainTabsList?.querySelector(`[data-index="${i}"]`) as HTMLElement;
+              if (target) {
+                const left = target.offsetLeft;
+                const width = target.offsetWidth;
+                const bg = mainTabsList?.querySelector('.sliding-bg') as HTMLElement;
+                if (bg) {
+                  bg.style.setProperty('--left', `${left}px`);
+                  bg.style.setProperty('--width', `${width}px`);
+                }
+              }
             }}
             title={tab.title}
-            class="relative px-6 py-2.5 h-10 text-base text-[#08215A] border border-[#7F8567] rounded-t cursor-pointer bg-white/80 hover:bg-white/90"
+            class="relative px-6 py-2.5 h-10 text-base text-[#08215A] border border-[#7F8567] rounded-t-md cursor-pointer bg-transparent hover:bg-white/10 transition-colors"
+            class:text-white={$currentTab === tab.id}
+            class:font-semibold={$currentTab === tab.id}
+            class:border-b-0={$currentTab === tab.id}
           >
             {tab.label}
           </button>
@@ -110,19 +178,40 @@ const simulateLoading = () => {
     </ul>
   </nav>
 
-  <!-- Sub Tabs (for Content section) -->
+  <!-- Sub Tabs -->
   {#if $currentTab === 'content'}
-    <nav class="sub-tabs relative pt-4 px-4 min-h-8 border-b border-[#7F8567]">
-      <ul class="flex relative bottom-0 m-0 p-0 list-none">
-        {#each contentSubTabs as tab}
-          <li class="relative mr-0.5" class:current={$currentSubTab === tab.id}>
+    <nav class="sub-tabs relative pt-4 px-4 min-h-8">
+      <ul bind:this={subTabsList} class="flex relative bottom-0 m-0 p-0 list-none">
+        {#each contentSubTabs as tab, i}
+          <li 
+            class="relative mr-1.5 z-10" 
+            class:current={$currentSubTab === tab.id}
+            data-index={i}
+          >
+            <div 
+              class="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-t-md border border-[#7F8567] border-b-0 bg-[url('./assets/images/bluetransparent.png')] bg-[rgba(8,33,90,0.8)] opacity-0 pointer-events-none"
+              class:opacity-100={$currentSubTab === tab.id}
+            />
             <button 
               onclick={() => {
                 simulateLoading();
                 currentSubTab.set(tab.id);
+                const target = subTabsList?.querySelector(`[data-index="${i}"]`) as HTMLElement;
+                if (target) {
+                  const left = target.offsetLeft;
+                  const width = target.offsetWidth;
+                  const bg = subTabsList?.querySelector('.sliding-bg') as HTMLElement;
+                  if (bg) {
+                    bg.style.setProperty('--left', `${left}px`);
+                    bg.style.setProperty('--width', `${width}px`);
+                  }
+                }
               }}
               title={tab.title}
-              class="relative px-4 py-2 h-9 text-base text-[#08215A] border border-[#7F8567] rounded-t cursor-pointer bg-white/80 hover:bg-white/90"
+              class="relative px-4 py-2 h-9 text-base text-[#08215A] border border-[#7F8567] rounded-t-md cursor-pointer bg-transparent hover:bg-white/10 transition-colors"
+              class:text-white={$currentSubTab === tab.id}
+              class:font-semibold={$currentSubTab === tab.id}
+              class:border-b-0={$currentSubTab === tab.id}
             >
               {tab.label}
             </button>
@@ -134,7 +223,10 @@ const simulateLoading = () => {
 
   <!-- Content Area -->
   <div class="flex-1 p-4 overflow-hidden">
-    <div class="panel border border-[#7F8567] rounded p-4">
+    <div class="panel border border-[#7F8567] rounded p-4 transition-[background-image] duration-300"
+      class:bg-green-panel={$currentTab !== 'content'}
+      class:bg-blue-panel={$currentTab === 'content'}
+    >
       {#key $currentTab + $currentSubTab}
         <div class="content-slide">
           {#if $currentTab === 'content'}
@@ -293,22 +385,17 @@ const simulateLoading = () => {
   }
 
   .main-tabs li.current button {
-    background: url('./assets/images/greentransparent.png'), rgba(127, 133, 103, 0.8);
+    background: transparent;
     border-bottom: none;
     color: white;
     font-weight: 600;
     margin-bottom: -1px;
+    position: relative;
+    z-index: 2;
   }
 
   .main-tabs li.current::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 1px;
-    right: 1px;
-    height: 1px;
-    background: url('./assets/images/greentransparent.png'), rgba(127, 133, 103, 0.8);
-    z-index: 2;
+    display: none;
   }
 
   .sub-tabs {
@@ -324,26 +411,43 @@ const simulateLoading = () => {
   }
 
   .sub-tabs li.current button {
-    background: url('./assets/images/bluetransparent.png'), rgba(8, 33, 90, 0.8);
+    background: transparent;
     border-bottom: none;
     color: white;
     font-weight: 600;
     margin-bottom: -1px;
+    position: relative;
+    z-index: 2;
   }
 
   .sub-tabs li.current::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 1px;
-    right: 1px;
-    height: 1px;
-    background: url('./assets/images/bluetransparent.png'), rgba(8, 33, 90, 0.8);
-    z-index: 2;
+    display: none;
   }
 
   .panel {
     background: url('./assets/images/whitetransparent.png'), rgba(255, 255, 255, 0.8);
+  }
+
+  .panel.bg-green-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('./assets/images/greentransparent.png'), rgba(127, 133, 103, 0.2);
+    pointer-events: none;
+    border-radius: 0.25rem;
+  }
+
+  .panel.bg-blue-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('./assets/images/bluetransparent.png'), rgba(8, 33, 90, 0.2);
+    pointer-events: none;
+    border-radius: 0.25rem;
+  }
+
+  .panel {
+    position: relative;
   }
 
   th {
@@ -377,5 +481,34 @@ const simulateLoading = () => {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  .main-tabs ul {
+    position: relative;
+  }
+
+  .main-tabs .sliding-bg {
+    display: none;
+  }
+
+  .main-tabs li.current button {
+    color: white;
+    font-weight: 600;
+    border-bottom: none;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sub-tabs ul {
+    position: relative;
+  }
+
+  .sub-tabs .sliding-bg {
+    display: none;
+  }
+
+  .sliding-bg {
+    display: none;
   }
 </style>
