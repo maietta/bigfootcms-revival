@@ -61,7 +61,7 @@ const simulateLoading = () => {
               currentTab.set(tab.id);
             }}
             title={tab.title}
-            class="relative px-6 py-2.5 h-10 text-base text-[#08215A] border border-[#7F8567] rounded-t-md cursor-pointer shadow-[inset_0_0_12px_rgba(0,0,0,0.05)] hover:shadow-[inset_0_0_12px_rgba(0,0,0,0.1)]"
+            class="relative px-6 py-2.5 h-10 text-base text-[#08215A] border border-[#7F8567] rounded-t cursor-pointer bg-white/80 hover:bg-white/90"
           >
             {tab.label}
           </button>
@@ -82,7 +82,7 @@ const simulateLoading = () => {
                 currentSubTab.set(tab.id);
               }}
               title={tab.title}
-              class="relative px-4 py-2 h-9 text-base text-[#08215A] border border-[#7F8567] rounded-t-md cursor-pointer shadow-[inset_0_0_12px_rgba(0,0,0,0.05)] hover:shadow-[inset_0_0_12px_rgba(0,0,0,0.1)]"
+              class="relative px-4 py-2 h-9 text-base text-[#08215A] border border-[#7F8567] rounded-t cursor-pointer bg-white/80 hover:bg-white/90"
             >
               {tab.label}
             </button>
@@ -238,8 +238,6 @@ const simulateLoading = () => {
 
   .main-tabs button {
     background: url('./assets/images/whitetransparent.png'), rgba(255, 255, 255, 0.8);
-    transform: perspective(0.625rem) rotateX(2deg);
-    transform-origin: bottom;
   }
 
   .main-tabs button:hover {
@@ -248,11 +246,10 @@ const simulateLoading = () => {
 
   .main-tabs li.current button {
     background: url('./assets/images/greentransparent.png'), rgba(127, 133, 103, 0.8);
-    transform: perspective(0) rotateX(0);
     border-bottom: none;
     color: white;
     font-weight: 600;
-    box-shadow: none;
+    margin-bottom: -1px;
   }
 
   .main-tabs li.current::after {
@@ -272,8 +269,6 @@ const simulateLoading = () => {
 
   .sub-tabs button {
     background: url('./assets/images/whitetransparent.png'), rgba(255, 255, 255, 0.8);
-    transform: perspective(0.625rem) rotateX(2deg);
-    transform-origin: bottom;
   }
 
   .sub-tabs button:hover {
@@ -282,11 +277,10 @@ const simulateLoading = () => {
 
   .sub-tabs li.current button {
     background: url('./assets/images/bluetransparent.png'), rgba(8, 33, 90, 0.8);
-    transform: perspective(0) rotateX(0);
     border-bottom: none;
     color: white;
     font-weight: 600;
-    box-shadow: none;
+    margin-bottom: -1px;
   }
 
   .sub-tabs li.current::after {
