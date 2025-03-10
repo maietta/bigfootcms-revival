@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* Custom styles */
+.cms-admin {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.cms-admin.visible {
+  top: 0;
+}
+
+.status-bar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.status-bar.visible {
+  top: 0;
+}
+
+.toggle-tab {
+  top: 0;
+  transform: translateY(var(--panel-height, 0));
+}
+
+.toggle-tab.open {
+  top: 0;
+}
+
+.bg-green-panel {
+  background-image: url('./assets/images/greentransparent.png');
+  background-color: rgba(127, 133, 103, 0.8);
+}
+
+.bg-blue-panel {
+  background-image: url('./assets/images/bluetransparent.png');
+  background-color: rgba(8, 33, 90, 0.8);
+}
+
+.content-slide {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

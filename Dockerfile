@@ -58,7 +58,7 @@ COPY webserver/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx
 
 # Add application
-COPY --chown=nobody public_html/ /var/www/html/
+COPY --chown=nobody backend/ /var/www/html/
 
 RUN mkdir -p /var/www/html/tmp
 RUN chown -R nobody.nobody /var/www/html/tmp

@@ -1,6 +1,6 @@
 {
     "config": {
-        "vendor-dir": "public_html/vendor/"
+        "vendor-dir": "backend/vendor/"
     },
     "require": {
         "php": "^8.3",

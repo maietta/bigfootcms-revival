@@ -4,7 +4,7 @@ import { onMount, onDestroy } from 'svelte';
 import btOpen from './assets/images/bt_open.png';
 
 const isEditing: Writable<boolean> = writable(false);
-const isPanelVisible: Writable<boolean> = writable(true);
+const isPanelVisible: Writable<boolean> = writable(false);
 const isLoading: Writable<boolean> = writable(false);
 const currentPath: Writable<string> = writable(window.location.pathname);
 const currentTab: Writable<string> = writable('content');
@@ -191,7 +191,7 @@ $: updateTabIndicator(subTabsList, 'li.current');
             <div 
               class="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-t-md border border-[#7F8567] border-b-0 bg-[url('./assets/images/bluetransparent.png')] bg-[rgba(8,33,90,0.8)] opacity-0 pointer-events-none"
               class:opacity-100={$currentSubTab === tab.id}
-            />
+            ></div>
             <button 
               onclick={() => {
                 simulateLoading();
@@ -234,12 +234,12 @@ $: updateTabIndicator(subTabsList, 'li.current');
               <div class="max-w-4xl mx-auto">
                 <h2 class="text-2xl font-bold mb-6">Basic Information</h2>
                 <div class="mb-6">
-                  <label class="block mb-2 font-bold text-[#08215A]">Page Title</label>
-                  <input type="text" placeholder="Enter page title" class="w-full p-3 border border-[#7F8567] rounded" />
+                  <label for="page-title" class="block mb-2 font-bold text-[#08215A]">Page Title</label>
+                  <input id="page-title" type="text" placeholder="Enter page title" class="w-full p-3 border border-[#7F8567] rounded" />
                 </div>
                 <div class="mb-6">
-                  <label class="block mb-2 font-bold text-[#08215A]">Meta Description</label>
-                  <textarea placeholder="Enter meta description" class="w-full p-3 border border-[#7F8567] rounded h-24 resize-y"></textarea>
+                  <label for="meta-desc" class="block mb-2 font-bold text-[#08215A]">Meta Description</label>
+                  <textarea id="meta-desc" placeholder="Enter meta description" class="w-full p-3 border border-[#7F8567] rounded h-24 resize-y"></textarea>
                 </div>
               </div>
             {/if}
@@ -318,23 +318,23 @@ $: updateTabIndicator(subTabsList, 'li.current');
                 <div class="border border-[#7F8567] rounded p-6">
                   <h3 class="mt-0 mb-6 text-lg p-3 text-white rounded">General</h3>
                   <div class="mb-6">
-                    <label class="block mb-2 font-bold text-[#08215A]">Site Title</label>
-                    <input type="text" value="BigfootCMS Site" class="w-full p-3 border border-[#7F8567] rounded" />
+                    <label for="site-title" class="block mb-2 font-bold text-[#08215A]">Site Title</label>
+                    <input id="site-title" type="text" value="BigfootCMS Site" class="w-full p-3 border border-[#7F8567] rounded" />
                   </div>
                   <div class="mb-6">
-                    <label class="block mb-2 font-bold text-[#08215A]">Site URL</label>
-                    <input type="text" value="http://localhost:8080" class="w-full p-3 border border-[#7F8567] rounded" />
+                    <label for="site-url" class="block mb-2 font-bold text-[#08215A]">Site URL</label>
+                    <input id="site-url" type="text" value="http://localhost:8080" class="w-full p-3 border border-[#7F8567] rounded" />
                   </div>
                 </div>
                 <div class="border border-[#7F8567] rounded p-6">
                   <h3 class="mt-0 mb-6 text-lg p-3 text-white rounded">Email</h3>
                   <div class="mb-6">
-                    <label class="block mb-2 font-bold text-[#08215A]">SMTP Server</label>
-                    <input type="text" placeholder="smtp.example.com" class="w-full p-3 border border-[#7F8567] rounded" />
+                    <label for="smtp-server" class="block mb-2 font-bold text-[#08215A]">SMTP Server</label>
+                    <input id="smtp-server" type="text" placeholder="smtp.example.com" class="w-full p-3 border border-[#7F8567] rounded" />
                   </div>
                   <div class="mb-6">
-                    <label class="block mb-2 font-bold text-[#08215A]">SMTP Port</label>
-                    <input type="number" placeholder="587" class="w-full p-3 border border-[#7F8567] rounded" />
+                    <label for="smtp-port" class="block mb-2 font-bold text-[#08215A]">SMTP Port</label>
+                    <input id="smtp-port" type="number" placeholder="587" class="w-full p-3 border border-[#7F8567] rounded" />
                   </div>
                 </div>
               </div>
