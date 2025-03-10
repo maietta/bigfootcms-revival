@@ -149,7 +149,7 @@ $: updateTabIndicator(subTabsList, 'li.current');
           <div 
             class="absolute inset-0 transition-opacity duration-300 ease-in-out rounded-t-md border border-[#7F8567] border-b-0 bg-[url('./assets/images/greentransparent.png')] bg-[rgba(127,133,103,0.8)] opacity-0 pointer-events-none"
             class:opacity-100={$currentTab === tab.id}
-          />
+          ></div>
           <button 
             onclick={() => {
               simulateLoading();
